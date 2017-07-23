@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".mainUi.activities.SettingsActivity">
+
+    <PreferenceCategory android:title="Academic Details">
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="Select Your Department"
+            android:entries="@array/std_dept_title"
+            android:entryValues="@array/std_dept_value"
+            android:icon="@drawable/ic_routine"
+            android:key="@string/std_dept"
+            android:title="Change Department"/>
+
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="Select Your Academic Year"
+            android:entries="@array/std_year_title"
+            android:entryValues="@array/std_year_value"
+            android:icon="@drawable/ic_routine"
+            android:key="@string/std_year"
+            android:title="Change Academic Year"/>
+
+
+        <ListPreference
+            android:dialogTitle="Select Your Semester"
+            android:entries="@array/std_sem_title"
+            android:entryValues="@array/std_sem_value"
+            android:icon="@drawable/ic_routine"
+            android:key="@string/std_sem"
+            android:title="Change Semester"/>
+
+        <ListPreference
+            android:dialogTitle="Select Section:"
+            android:entries="@array/std_section_title"
+            android:entryValues="@array/std_section_value"
+            android:icon="@drawable/ic_routine"
+            android:key="@string/std_sec"
+            android:title="Change Section"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Files">
+        <ListPreference
+            android:dialogTitle="Select Save File Type"
+            android:entries="@array/save_modes"
+            android:entryValues="@array/save_mode_values"
+            android:icon="@android:drawable/ic_menu_save"
+            android:key="@string/file_save_mode"
+            android:title="Change Saving File Type"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

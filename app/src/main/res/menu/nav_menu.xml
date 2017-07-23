@@ -1,39 +1,60 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.apphousebd.austhub.BaseActivity">
+      tools:context="com.apphousebd.austhub.mainUi.activities.BaseActivity">
 
-    <item
-        android:id="@+id/action_routine"
-        android:icon="@drawable/ic_routine"
-        android:title="@string/class_routine"/>
+    <group android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/action_cpga"
-        android:icon="@drawable/ic_calculator"
-        android:title="@string/cgpa_calculator"/>
+        <item
+            android:id="@+id/action_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home"/>
 
-    <item
-        android:id="@+id/action_alarm"
-        android:icon="@drawable/ic_alarm"
-        android:title="@string/set_quiz_alarm"/>
 
-    <item
+        <item
+            android:id="@+id/action_routine"
+            android:icon="@drawable/ic_routine"
+            android:title="@string/class_routine"/>
 
-        android:title="@string/others">
+        <item
+            android:id="@+id/action_cpga"
+            android:icon="@drawable/ic_calculator"
+            android:title="@string/cgpa_calculator"/>
 
-        <menu>
-            <group>
-                <item
-                    android:id="@+id/action_settings"
-                    android:icon="@drawable/ic_settings"
-                    android:title="@string/action_settings"/>
+        <item
+            android:id="@+id/action_alarm"
+            android:icon="@drawable/ic_alarm"
+            android:title="@string/set_quiz_alarm"/>
 
-                <item
-                    android:id="@+id/action_us"
-                    android:icon="@android:drawable/ic_dialog_info"
-                    android:title="@string/about_us"/>
+        <item
+            android:id="@+id/action_result"
+            android:icon="@drawable/ic_results"
+            android:title="Results"/>
 
-            </group>
-        </menu>
-    </item>
+        <item
+
+            android:checkable="true"
+            android:title="@string/others">
+
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/action_settings"
+                        android:icon="@drawable/ic_settings"
+                        android:title="@string/action_settings"/>
+
+                    <item
+                        android:id="@+id/action_us"
+                        android:icon="@drawable/ic_info"
+                        android:title="@string/about_us"/>
+
+                    <!--<item-->
+                    <!--android:id="@+id/action_check_update"-->
+                    <!--android:icon="@drawable/ic_sync"-->
+                    <!--android:title="@string/check_for_update"/>-->
+
+                </group>
+            </menu>
+        </item>
+
+    </group>
 </menu>

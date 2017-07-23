@@ -7,9 +7,41 @@
     <string name="navigation_hreader_img">navigation hreader img</string>
     <string name="class_routine">Class Routine</string>
     <string name="cgpa_calculator">CGPA Calculator</string>
-    <string name="set_quiz_alarm">Set Quiz Alarm</string>
+    <string name="set_quiz_alarm">Set Quiz Reminder</string>
     <string name="others">Others</string>
     <string name="about_us">About Us</string>
+    <string name="check_for_update">Check For Update</string>
+
+    <!--main activity titles array-->
+    <string-array name="title_array">
+        <item>Home</item>
+        <item>Routine</item>
+        <item>CGPA Calculator</item>
+        <item>Set Reminder</item>
+        <item>Results</item>
+
+    </string-array>
+
+    <!--home titles-->
+    <string-array name="home_title_array">
+        <item>Class Routine</item>
+        <item>CGPA Calculator</item>
+        <item>Reminder</item>
+        <item>Results</item>
+        <item>Settings</item>
+        <item>About Us</item>
+
+    </string-array>
+
+    <!--preference setting names-->
+    <string name="std_year">std_year</string>
+    <string name="std_sem">std_sem</string>
+    <string name="std_sec">std_sec</string>
+    <string name="std_dept">std_dept</string>
+    <string name="routine_version">version</string>
+    <string name="check_time">time</string>
+    <string name="std_name">std_name</string>
+    <string name="file_save_mode">save_mode</string>
 
 
     <!--navigation menu items-->
@@ -18,5 +50,144 @@
         <item>CGPA</item>
 
     </array>
+
+    <!--std dept title-->
+    <string-array name="std_dept_title">
+
+        <item>Architecture</item>
+        <item>BBA</item>
+        <item>CE</item>
+        <item>CSE</item>
+        <item>EEE</item>
+        <item>IPE</item>
+        <item>ME</item>
+        <item>TE</item>
+
+    </string-array>
+
+    <!--std dept data-->
+    <string-array name="std_dept_value">
+
+        <item>arch</item>
+        <item>bba</item>
+        <item>ce</item>
+        <item>cse</item>
+        <item>eee</item>
+        <item>ipe</item>
+        <item>me</item>
+        <item>te</item>
+
+    </string-array>
+
+    <!--std year title-->
+    <string-array name="std_year_title">
+
+        <item>1st Year</item>
+        <item>2nd Year</item>
+        <item>3rd Year</item>
+        <item>4th Year</item>
+
+    </string-array>
+
+    <!--std year value-->
+    <string-array name="std_year_value">
+
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+
+    </string-array>
+
+    <!--std semester title-->
+    <string-array name="std_sem_title">
+
+        <item>1st Semester</item>
+        <item>2nd Semester</item>
+
+    </string-array>
+
+    <!--std semester value-->
+    <string-array name="std_sem_value">
+
+        <item>1</item>
+        <item>2</item>
+
+    </string-array>
+
+    <!--std section title-->
+    <string-array name="std_section_title">
+        <item>Section A</item>
+        <item>Section B</item>
+        <item>Section C</item>
+        <item>Section D</item>
+    </string-array>
+
+    <!--std section values-->
+    <string-array name="std_section_value">
+
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+
+    </string-array>
+
+    <!--file save mode-->
+    <string-array name="save_modes">
+        <item>TXT file</item>
+        <item>PDF file</item>
+    </string-array>
+
+    <!--save values-->
+    <string-array name="save_mode_values">
+        <item>.txt</item>
+        <item>.pdf</item>
+    </string-array>
+
+    <!--about us-->
+    <string name="about_us_string">
+        Department Of CSE\n\n
+
+        ---Authors---\n
+        Asif Imtiaz Shaafi\n
+        Sayef Reyadh Khan\n\n
+        ---Icon Credits---\n
+        Abdullah Kabir\n
+        Icon made by Freepik, Popcorns Arts from www.flaticon.com\n
+    
+    </string>
+    <string name="title_activity_user_sign_in">AustHub-Sign In</string>
+    <string name="title_activity_calculator">CalculatorActivity</string>
+    <string name="splash_internet_error_msg">Please connect to internet to download the routine from server.\nThis download is required only once!</string>
+    <string name="splah_data_fetch_error_msg">Sorry, Something went wrong!\nPlease try again later!</string>
+    <string name="sign_up_user_img">Sign_up_user_img</string>
+    <string name="user_email">User Email</string>
+    <string name="user_name">User Name</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_result_display">CGPA Result</string>
+    <string name="no_files_found">No Results Found</string>
+
+    <!--file name getting string-->
+    <string name="__">__</string>
+    <string name="_00">00</string>
+    <string name="_000">000</string>
+    <string name="calculate">Calculate</string>
+    <string name="home_image">home_image</string>
+    <string name="title_activity_routine_display">RoutineDisplayActivity</string>
+    <string name="reminder_iem_logo">reminder_iem_logo</string>
+    <string name="download_msg">Downloading routine! Please wait for a moment.</string>
+    <string name="last_checked_on">Last Checked On:</string>
+    <string name="current_data_version">Current Data Version:</string>
+
+    <string name="copy_right">&#169;AppHouseBD</string>
+
+    <string name="title_activity_routine_image_display">RoutineImageDisplayActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

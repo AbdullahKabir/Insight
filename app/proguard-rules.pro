@@ -4,7 +4,7 @@
 # You can edit the include path and order by changing the proguardFiles
 # directive in build.gradle.
 #
-# For more details, see
+# For more routine_details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn com.squareup.okhttp.**
+-dontwarn okio**

@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.apphousebd.austhub">
 
+    <!-- internet permission to get data from internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- network state permission to get the state of the network of the user -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <!-- alarm -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,19 +22,109 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".BaseActivity"
+            android:name=".mainUi.activities.BaseActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".mainUi.activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".mainUi.activities.SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".mainUi.activities.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".mainUi.activities.MainActivity"/>
+        <activity
+            android:name=".userAuth.UserSignIn"
+            android:label="@string/title_activity_user_sign_in"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".mainUi.activities.DialogActivity"
+            android:label="Error!"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert">
+        </activity>
+        <activity
+            android:name=".userAuth.SignUp"
+            android:label="@string/sign_up"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert">
+        </activity>
+        <activity
+            android:name=".mainUi.activities.ResultDisplayActivity"
+            android:label="@string/title_activity_result_display"
+            android:parentActivityName=".mainUi.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.apphousebd.austhub.mainUi.activities.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".mainUi.activities.RoutineDisplayActivity"
+            android:parentActivityName=".mainUi.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.apphousebd.austhub.mainUi.activities.MainActivity"/>
+        </activity>
+
+        <!-- reminder -->
+        <activity
+            android:name=".mainUi.activities.reminder.AddReminderActivity"
+            android:label="Add Reminder"
+            android:parentActivityName=".mainUi.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainUi.activities.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".mainUi.activities.reminder.ReminderDetailActivity"
+            android:label="Reminder Details"
+            android:parentActivityName=".mainUi.activities.MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainUi.activities.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".mainUi.activities.AboutUsActivity"
+            android:label="Our Info!"
+            android:parentActivityName=".mainUi.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainUi.activities.MainActivity"/>
+        </activity>
+        <activity android:name=".mainUi.activities.reminder.EditReminder">
+        </activity>
+
+        <!-- alarm receiver -->
+
+        <receiver android:name=".backgroundTasks.Receiver">
+            <intent-filter>
+                <action android:name="com.apphousebd.austhub.backgroundTasks.Receiver"/>
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".mainUi.activities.UpdateActivity"
+            android:parentActivityName=".mainUi.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainUi.activities.MainActivity"/>
+        </activity>
+        <activity android:name=".userAuth.UserProfileActivity">
         </activity>
     </application>
 

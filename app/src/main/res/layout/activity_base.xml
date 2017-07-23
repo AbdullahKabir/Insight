@@ -9,19 +9,27 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <FrameLayout
-        android:id="@+id/base_frame_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <!--<FrameLayout-->
+    <!--android:id="@+id/base_frame_container"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"/>-->
 
+    <include
+        layout="@layout/activity_main"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/base_nav"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#313131"
         android:fitsSystemWindows="true"
+        app:elevation="4dp"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@drawable/nav_menu_item"
+        app:itemTextAppearance="?android:attr/textAppearanceMedium"
+        app:itemTextColor="@drawable/nav_menu_item"
         app:menu="@menu/nav_menu"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,17 @@
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lab_result_swipe"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainUi.activities.MainActivity">
+
+    <WebView
+        android:id="@+id/lab_result_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:animateLayoutChanges="true"
+        android:fadeScrollbars="true"/>
+
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_user_sign_in"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.apphousebd.austhub.userAuth.UserSignIn"
+    tools:showIn="@layout/activity_user_sign_in">
+
+
+    <Button
+        android:id="@+id/user_sign_up_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#14bcb6"
+        android:onClick="goToSignUp"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        android:textStyle="bold"/>
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<View-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_margin="4dp"-->
+    <!--android:layout_weight="6"-->
+    <!--android:background="#ff3636"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="OR"-->
+    <!--android:textSize="16sp"-->
+    <!--android:textStyle="bold"/>-->
+
+
+    <!--<View-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_margin="4dp"-->
+    <!--android:layout_weight="6"-->
+    <!--android:background="#ff3636"/>-->
+
+    <!--</LinearLayout>-->
+
+
+    <Button
+        android:id="@+id/user_sign_in_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#14bcb6"
+        android:onClick="goToSignUp"
+        android:text="Sign In"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+
+</LinearLayout>
