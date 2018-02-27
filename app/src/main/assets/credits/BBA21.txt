@@ -1,0 +1,12 @@
+BBA 211 
+Advanced Accounting 
+3 
+BBA 213 
+Business Mathematics 
+3 
+BBA 214 
+Macroeconomics 
+3 
+BBA 215 
+Introduction to Computer in Business 
+4

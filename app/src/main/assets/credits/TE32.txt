@@ -1,0 +1,24 @@
+Tex    307	
+Wet Processing Technology-II	
+4	
+Tex    308	
+Wet Processing Technology-II Lab	
+1.5	
+Tex    309	
+Garments Technology-II	
+4	
+Tex    310	
+Garments Technology-II Lab	
+1.5	
+Tex    315	
+Technical Textiles	
+3	
+ME     301	
+Elements of Mechanical Engineering 	
+3	
+ME     302	
+Elements of Mechanical Engineering Lab	
+1.5	
+Hum    303	
+Industrial Management 	
+4	

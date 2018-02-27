@@ -1,0 +1,24 @@
+Tex 101	
+Textile Raw Materials-I 	
+3	
+ME 102	
+Engineering Drawing-I	
+1.5	
+Hum 103	
+English Language	
+3	
+Chem 107	
+Chemistry-I	
+3	
+Chem 108	
+Chemistry-I Lab	
+1.5	
+Phy 109	
+Physics-I
+3	
+Phy 110
+Physics-I Lab	
+1.5	
+Math 111
+Mathematics-I
+3	

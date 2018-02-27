@@ -1,0 +1,24 @@
+Tex 201	
+Textile Raw Materials-II	
+3	
+Tex 203	
+Yarn Manufacturing Technology-I	
+4	
+Tex 204	
+Yarn Manufacturing Technology-I Lab	
+1.5	
+Tex 205	
+Fabric Manufacturing Technology-I 
+4	
+Tex 206	
+Fabric Manufacturing Technology-I Lab
+1.5	
+ME 201	
+Elements of Theory of Machines & Machine Design	
+3	
+Math 205
+Statistics 
+3
+CSE 2146	
+Introduction to Computer Science  	
+1.5

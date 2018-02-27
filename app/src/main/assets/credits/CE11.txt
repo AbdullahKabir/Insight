@@ -1,0 +1,24 @@
+Phy 101 
+Physics-I 
+3.0 
+CE 100 
+Civil Engg. Drawing-I 
+1.5
+Chem 101 
+Chemistry-I 
+3.0 
+Chem 102 
+Chemistry Lab. 
+1.5
+CE 103 
+Surveying 
+4.0 
+EEE 1132 
+Basic Electrical Technology Lab. 
+1.5
+EEE 1131 
+Basic Electrical Technology 
+3.0
+Math 101 
+Mathematics-I 
+3.0

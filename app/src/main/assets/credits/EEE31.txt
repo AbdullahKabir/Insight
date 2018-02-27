@@ -1,0 +1,24 @@
+EEE 3103 
+Digital Electronics I 
+3.0
+EEE 3104 
+Digital Electronics I Lab. 
+1.5
+EEE 3107 
+Signals and Linear Systems 
+3.0
+EEE 3110 
+Numerical Technique Lab. 
+1.5
+EEE 3113 
+Electrical Properties of Materials 
+3.0
+EEE 3100 
+Electrical Service Design 
+1.5
+EEE 3117 
+Electromagnetics 
+3.0
+HUM 3109 
+Industrial Management 
+3.0

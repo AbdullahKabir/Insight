@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:33 PM
+  ~ Modified By: shaafi
+  -->
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="#B6B6B6">
+    <item android:id="@android:id/mask" android:drawable="@android:color/white"/>
+</ripple>

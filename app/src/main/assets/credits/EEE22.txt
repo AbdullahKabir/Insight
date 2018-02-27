@@ -1,0 +1,27 @@
+EEE 2203 
+Electronics II 
+3.0
+EEE 2204 
+Electronics II Lab. 
+1.5
+EEE 2205 
+Energy Conversion II 
+3.0
+EEE 2206 
+Energy Conversion II Lab. 
+1.5
+EEE 2210 
+Electronic Circuit Simulation Lab. 
+1.5
+EEE 2211 
+Measurement and Instrumentation 
+3.0
+EEE 2212 
+Measurement and Instrumentation Lab 
+1.5
+MATH 2203 
+Mathematics V 
+3.0
+HUM 2209 
+Accounting and Economics 
+3.0

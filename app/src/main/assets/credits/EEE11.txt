@@ -1,0 +1,27 @@
+EEE 1101 
+Electrical Circuits I 
+3.0
+EEE 1102 
+Electrical Circuits I Lab. 
+1.5
+ME 1101 
+Mechanical Engineering Fundamentals 
+3.0
+ME 1102 
+Mechanical Engineering Fundamentals Lab. 
+1.5
+PHY 1105 
+Physics I 
+3.0
+PHY 1106 
+Physics I Lab. 
+1.5
+MATH 1103 
+Mathematics I 
+3.0
+CHEM 1107 
+Chemistry 
+3.0
+CHEM 1108 
+Chemistry Lab. 
+1.5

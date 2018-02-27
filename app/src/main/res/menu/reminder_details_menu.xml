@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:33 PM
+  ~ Modified By: shaafi
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:menuCategory="container"
+        android:orderInCategory="101"
+        android:title="Edit"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:menuCategory="container"
+        android:orderInCategory="102"
+        android:title="Delete"
+        app:showAsAction="ifRoom"/>
+
+</menu>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:33 PM
+  ~ Modified By: shaafi
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              tools:context=".mainUi.activities.reminder.ReminderDetailActivity">
+
+
+    <TextView
+        android:id="@+id/reminder_subject_detail_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_half_vertical_margin"
+        android:fontFamily="sans-serif-dark"
+        android:gravity="center"
+        android:text="Subject"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/reminder_date_detail_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-dark"
+            android:gravity="start"
+            android:padding="@dimen/activity_quarter_vertical_margin"
+            android:text="Date"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/reminder_time_detail_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/reminder_date_detail_activity"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-dark"
+            android:gravity="end"
+            android:padding="@dimen/activity_quarter_vertical_margin"
+            android:text="Time"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+
+            />
+    </LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_half_vertical_margin">
+
+        <TextView
+            android:id="@+id/reminder_details_detail_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:text="Details"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:textColor="@color/colorPrimaryDark"/>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+EEE 1201 
+Electrical Circuits II 
+3.0
+EEE 1202 
+Electrical Circuits II Lab. 
+1.5
+EEE 1210 
+Electrical Circuit Simulation Lab. 
+1.5
+PHY 1205 
+Physics II 
+3.0
+MATH 1203 
+Mathematics II 
+3.0
+MATH 1213 
+Mathematics III 
+3.0
+CE 1201 
+Mechanics of Materials 
+3.0
+CE 1202 
+Engineering Drawing with AutoCAD 
+1.5

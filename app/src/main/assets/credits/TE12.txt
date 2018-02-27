@@ -1,0 +1,27 @@
+Tex 103	
+Polymer Science  	
+3	
+ME 103	
+Mechanics of Materials	
+3	
+ME 104	
+Workshop Practice	
+1.5	
+ME 108	
+Engineering Drawing-II	
+1.5	
+Phy 111
+Physics-II	
+3	
+Phy 112	
+Physics-II Lab	
+1.5
+Chem 111	
+Chemistry-II	
+3	
+Chem 112	
+Chemistry-II Lab	
+1.5
+Math 113	
+Mathematics-II	
+3	

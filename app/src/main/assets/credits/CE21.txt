@@ -1,0 +1,24 @@
+Math 231
+Mathematics-III
+3
+CE 202
+Engineering Materials Lab.
+1.5
+Hum 201
+Accounting
+2
+CSE 2163
+Numerical Methods and Computer Programming Lab.
+1.5
+CE 201
+Engineering Materials
+4
+CE 212
+Mechanics of Solids Lab.
+1.5
+CSE 2153
+Numerical Methods and Computer Programming
+3
+CE 211
+Mechanics of Solids-I
+3

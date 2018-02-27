@@ -1,0 +1,27 @@
+Math 1107	
+NO NAME
+3.0		
+Phy 1106
+NO NAME	
+1.5
+Phy 1105
+NO NAME	
+3.0		
+Chem 1108
+NO NAME	
+1.5
+Chem 1107
+NO NAME	
+3.0		
+IPE 1110
+NO NAME	
+1.5
+ME 1103
+NO NAME	
+3.0		
+Hum 1108
+NO NAME	
+1.5
+Hum 1107
+NO NAME	
+3.0			

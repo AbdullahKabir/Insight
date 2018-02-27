@@ -1,0 +1,24 @@
+EEE 3203 
+Solid State Devices 
+3.0
+EEE 3205 
+Power System I 
+3.0
+EEE 3207 
+Communication Theory 
+3.0
+EEE 3208 
+Communication Theory Lab. 
+1.5
+EEE 3209 
+Microprocessor, Interfacing and System design 
+3.0
+EEE 3210 
+Microprocessor, Interfacing and System design Lab. 
+1.5
+EEE 3217 
+Digital Signal Processing I 
+3.0
+EEE 3218 
+Digital Signal Processing I Lab. 
+1.5

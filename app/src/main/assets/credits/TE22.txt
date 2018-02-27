@@ -1,0 +1,30 @@
+Tex 207	
+Wet Processing Technology-I
+4	
+Tex 208	
+Wet Processing Technology- I Lab	
+1.5	
+Tex 209	
+Garments Technology-I	
+4	
+Tex 210	
+Garments Technology-I Lab	
+1.5	
+Tex 211	
+Textile Testing & Quality Control-I	
+3	
+Tex 212	
+Textile Testing & Quality Control-I Lab	
+1.5	
+Tex 219	
+Textile Physics-I	
+3	
+EEE 217	
+Elements of Electrical Engg. & Electronics  	
+3	
+EEE 218	
+Elements of Electrical Engg. & Electronics Lab	
+1.5	
+CSE 2186	
+Basic Programming Techniques 	
+1.5	

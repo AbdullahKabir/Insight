@@ -1,0 +1,27 @@
+CE 203
+Geology and Geomorphology
+3
+CE 200
+Details of Construction
+1.5
+CE 213
+Mechanics of Solids-II
+3
+CE 208
+Quantity Surveying
+1.5
+CE 271
+Mechanics of Fluids
+4
+CE 272
+Mechanics of Fluids Lab.
+1.5
+Math 233
+Mathematics-IV
+3
+CE 104
+Practical Surveying
+1.5
+Hum 203
+Sociology
+2

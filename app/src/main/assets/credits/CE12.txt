@@ -1,0 +1,18 @@
+CE 101
+Engg. Mechanics
+4
+CE 102
+Computer Aided Drafting
+1.5
+Math 103
+Mathematics-II
+3
+Phy 102
+Physics Lab.
+1.5
+Hum 101
+English and Economics
+4
+Phy 103
+Physics-II
+3

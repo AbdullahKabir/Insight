@@ -1,0 +1,27 @@
+CE 313 
+Structural Analysis and Design-II 
+3.0 
+CE 316 
+Design of Concrete Structures Lab 
+1.5
+CE 317 
+Design of Concrete Structures-II 
+3.0 
+CE 354 
+Transportation Engg. Lab.-I 
+1.5
+CE 333 
+Environmental Engg.-II 
+3.0 
+CE 374 
+Water Resources Engg. Lab.-I 
+1.5
+CE 343 
+Geotechnical Engg.-II 
+3.0
+CE 353 
+Transportation Engg.-II 
+3.0
+CE 373 
+Water Resources Engg.-II 
+4.0

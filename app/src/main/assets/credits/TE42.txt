@@ -1,0 +1,48 @@
+Tex 411
+(Textile Testing and Quality Control-III)
+3
+Tex 423 
+(Yarn Manufacturing-IV)
+4
+Tex 424 
+(Yarn Manufacturing-IV Lab)
+1.5
+Tex 425 
+(Fabric Manufacturing-IV)
+4
+Tex 426 
+(Fabric Manufacturing-IV Lab)
+1.5
+Tex 427 
+(Wet Processing-IV)
+4
+Tex 428 
+(Wet Processing-IV Lab)
+1.5
+Tex 429 
+(Apparel Manufacturing-IV)
+4
+Tex 430 
+(Apparel Manufacturing-IV Lab)
+1.5
+Tex 431 
+(Application of Computer in YM)
+3
+Tex 433 
+(Application of Computer in FM)
+3
+Tex 435 
+(Application of Computer in WP)
+3
+Tex 437 
+(Application of Computer in AM)
+3
+HUM 401
+(Accounting & Marketing)
+4
+Tex 400 
+(Project Work)
+3
+Tex 500 
+(Industrial Training)
+3

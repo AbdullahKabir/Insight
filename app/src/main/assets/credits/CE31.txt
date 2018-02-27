@@ -1,0 +1,27 @@
+CE 311
+Structural Analysis and Design-I
+3
+CE 312
+Structural Analysis and Design Lab.-I
+1.5
+CE 315
+Design of Concrete Structures-I
+3
+CE 332
+Environmental Engg. Lab.-I
+1.5
+CE 331
+Environmental Engg.-I
+3
+CE 344
+Geotechnical Engineering Lab-I.
+1.5
+CE 341
+Geotechnical Engg.-I
+3
+CE 351
+Transportation Engg.-I
+3
+CE 371
+Water Resources Engg.-I
+3

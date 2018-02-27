@@ -1,0 +1,52 @@
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:33 PM
+  ~ Modified By: shaafi
+  -->
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:padding="@dimen/activity_vertical_margin"
+    tools:context="com.apphousebd.austhub.mainUi.fragments.ReminderFragment">
+
+    <TextView
+        android:id="@+id/reminder_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="No Reminder!"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rec_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/reminder_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="auto"
+        app:srcCompat="@android:drawable/ic_input_add"/>
+
+</android.support.design.widget.CoordinatorLayout>

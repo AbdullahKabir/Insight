@@ -1,0 +1,27 @@
+Tex    303	
+Yarn Manufacturing Technology-II	
+4	
+Tex    304	
+Yarn Manufacturing Technology-II Lab	
+1.5	
+Tex    305	
+Fabric Manufacturing Technology-II	
+4	
+Tex    306	
+Fabric Manufacturing Technology-II Lab	
+1.5
+Tex    311	
+Textile Testing & Quality Control-II	
+3	
+Tex    312	
+Textile Testing & Quality Control-II Lab	
+1.5
+Tex    313	
+Fabric Structure & Design	
+3	
+Tex    314	
+Fabric Structure & Design Lab	
+1.5	
+Tex    319	
+Textile Physics-II	
+3	

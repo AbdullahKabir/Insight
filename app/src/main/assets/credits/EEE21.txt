@@ -1,0 +1,27 @@
+EEE 2103 
+Electronics I 
+3.0
+EEE 2104 
+Electronics I Lab. 
+1.5
+EEE 2105 
+Energy Conversion I 
+3.0
+EEE 2106 
+Energy Conversion I Lab. 
+1.5
+EEE 2109 
+Programming Language 
+3.0
+EEE 2110 
+Programming Language Lab. 
+1.5
+MATH 2103 
+Mathematics IV 
+3.0
+HUM 2109 
+English and Sociology 
+3.0
+HUM 2110 
+Developing English Skills Lab. 
+1.5

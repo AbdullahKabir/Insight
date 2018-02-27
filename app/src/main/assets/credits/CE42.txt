@@ -1,0 +1,30 @@
+CE 403
+Professional Practices
+2
+CE 450
+Project and Thesis
+3
+CE 413
+Structural Analysis and Design-IV
+2
+CE 416
+Pre-stressed Concrete Lab.
+1.5
+CE 417
+Design of Steel Structures
+3
+CE 418
+Computer Aided Analysis and Design of Structures
+1.5
+CE 451
+Transportation Engg.-III
+3
+CE 452
+Transportation Engg. Lab.-II
+0.75
+CE 471
+Water Resources Engg.-III
+3
+CE 472
+Water Resources Engg. Lab.-II
+0.75

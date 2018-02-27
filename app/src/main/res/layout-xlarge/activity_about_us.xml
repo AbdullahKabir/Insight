@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:33 PM
+  ~ Modified By: shaafi
+  -->
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFEFEAEA"
+    tools:context=".mainUi.activities.AboutUsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/black_overlay"
+            android:titleTextColor="#3838c6"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            tools:title="fjdkfjdskl"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.example.sayefreyadh.austhub.ui.AboutUsActivity">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/aboutUsGif"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                android:src="@drawable/giphy"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/aboutUsGif"
+                android:fontFamily="monospace"
+                android:text="@string/about_us_string"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/mdtp_numbers_text_color"
+                android:textSize="45sp"
+                android:textStyle="normal|bold"/>
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="top|end"
+        android:layout_margin="8dp"
+        android:gravity="end|bottom"
+        android:text="@string/copy_right"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <TextView
+        android:id="@+id/about_us_version_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
+        android:layout_gravity="top|start"
+        tools:text="version"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:textStyle="bold"/>
+
+</android.support.design.widget.CoordinatorLayout>

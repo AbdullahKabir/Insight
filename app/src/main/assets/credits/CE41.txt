@@ -1,0 +1,27 @@
+CE 401
+Construction Project Management
+3
+CE 400
+Project and Thesis
+3
+CE 411
+Structural Analysis and Design-III
+4
+CE 412
+Structural Analysis and Design Lab.-II
+1.5
+CE 415
+Pre-stressed Concrete
+3
+CE 432
+Environmental Engg Lab.-II
+0.75
+CE 431
+Environmental Engg.-III
+3
+CE 442
+Geotechnical Engg.  Lab.-II
+0.75
+CE 441
+Geotechnical Engg.-III
+3

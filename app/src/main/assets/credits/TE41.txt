@@ -1,0 +1,45 @@
+Tex 403 
+(Yarn Manufacturing-III)
+4
+Tex 404 
+(Yarn Manufacturing-III Lab)
+1.5
+Tex 405 
+(Fabric Manufacturing-III)
+4
+Tex 406 
+(Fabric Manufacturing-III Lab)
+1.5
+Tex 407 
+(Wet Processing-III)
+4
+Tex 408 
+(Wet Processing-III Lab)
+1.5
+Tex 409 
+(Apparel Manufacturing-III)
+4
+Tex 410 
+(Apparel Manufacturing-III Lab)
+1.5
+Tex 413 
+(Special Yarn Production)
+2
+Tex 415 
+(Special Fabric Production)
+2
+Tex 417 
+(Special Wet Processing)
+2
+Tex 419 
+(Special Apparel Production)
+2
+Tex 401 
+(Management and Maintenance of Textile Machinery)
+3
+ME 403 
+(Production Planning and Control)
+3
+HUM 403 
+(Sociology and Industrial Organizational Psychology)
+4
