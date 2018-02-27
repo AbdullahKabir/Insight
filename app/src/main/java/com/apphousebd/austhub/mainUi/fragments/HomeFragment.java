@@ -1,8 +1,20 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:43 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.mainUi.fragments;
 
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +25,9 @@ import android.view.ViewGroup;
 import com.apphousebd.austhub.R;
 import com.apphousebd.austhub.dataModel.homeDataModel.HomeMenuData;
 import com.apphousebd.austhub.mainUi.adapters.HomeMenuAdapter;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
@@ -21,10 +36,9 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
  */
 public class HomeFragment extends Fragment {
 
-    private RecyclerView recView;
-    private HomeMenuAdapter adapter;
-
     private HomeFragmentListener mHomeFragmentListener;
+
+    private InterstitialAd mInterstitialAd;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -36,16 +50,45 @@ public class HomeFragment extends Fragment {
 
         if (!(context instanceof HomeFragmentListener)) throw new AssertionError();
         mHomeFragmentListener = (HomeFragmentListener) context;
+
+
+        // setting up the ad unit
+        mInterstitialAd = new InterstitialAd(context);
+        mInterstitialAd.setAdUnitId(getString(R.string.full_screen_ad));
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                mInterstitialAd.loadAd(
+                        new AdRequest.Builder()
+                                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                                .build()
+                );
+            }
+        });
+        mInterstitialAd.loadAd(
+                new AdRequest.Builder()
+                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                        .build()
+        );
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        recView = (RecyclerView) view.findViewById(R.id.rec_list);
+        RecyclerView recView = view.findViewById(R.id.rec_list);
 
-        adapter = new HomeMenuAdapter(getContext(), mHomeFragmentListener, HomeMenuData.getListData(getContext()));
+        view.findViewById(R.id.showAdBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mInterstitialAd.isLoaded())
+                    mInterstitialAd.show();
+            }
+        });
+
+        HomeMenuAdapter adapter = new HomeMenuAdapter(getContext(), mHomeFragmentListener, HomeMenuData.getListData(getContext()));
 
         recView.setAdapter(adapter);
 

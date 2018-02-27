@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:43 PM
+  ~ Modified By: shaafi
+  -->
+
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -45,14 +55,27 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Files">
-        <ListPreference
-            android:dialogTitle="Select Save File Type"
-            android:entries="@array/save_modes"
-            android:entryValues="@array/save_mode_values"
-            android:icon="@android:drawable/ic_menu_save"
-            android:key="@string/file_save_mode"
-            android:title="Change Saving File Type"/>
+    <PreferenceCategory android:title="About App">
+
+        <Preference
+            android:enabled="true"
+            android:key="@string/title_version"
+            android:shouldDisableView="true"
+            android:summary="@string/app_version"
+            android:title="@string/title_version" />
+
+        <Preference
+            android:key="@string/key_send_feedback"
+            android:summary="@string/summary_support"
+            android:title="@string/title_send_feedback" />
+
+        <!-- preference opens url in browser -->
+        <Preference android:summary="About AppHouseBD">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.facebook.com/apphousebd" />
+        </Preference>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

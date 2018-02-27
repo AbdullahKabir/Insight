@@ -1,3 +1,14 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:41 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.utilities;
 
 import android.app.Dialog;
@@ -6,9 +17,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.apphousebd.austhub.R;
 
 import java.io.IOException;
 
@@ -19,6 +34,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static com.apphousebd.austhub.utilities.Constants.ROUTINE_DOWNLOAD_URL;
 
 /**
  * Created by Asif Imtiaz Shaafi on 07-Dec-16.
@@ -77,28 +94,26 @@ public class NetworkConnectionManager {
                     JsonHelper.decodeJsonData(context, result);
 
                 } else {
-//                    Toast.makeText(context, "Sorry No Responce Found From Server,Try Later!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Sorry No Responce Found From Server,Try Later!", Toast.LENGTH_LONG).show();
                 }
 
             }
         });
     }
 
-    public static Response getRoutineJson(Context context) {
+    public static Response getRoutineJson(Context context, String dept) {
 
         OkHttpClient client = new OkHttpClient();
-
-//        String url = "http://www.androidtesting.tk/austhub/";
-        String url = "http://10.0.2.2/austhub/index.php";
 
         //the form body
         RequestBody formBody = new FormBody.Builder()
                 .add("submit", "submit")
+                .add("dept", dept)
                 .build();
 
         //building the url body
         Request request = new Request.Builder()
-                .url(url)
+                .url(ROUTINE_DOWNLOAD_URL)
                 .addHeader("Content-Type", "application/json")
                 .post(formBody)
                 .build();
@@ -114,6 +129,10 @@ public class NetworkConnectionManager {
             return client.newCall(request).execute();
         } catch (IOException e) {
             e.printStackTrace();
+            PreferenceManager.getDefaultSharedPreferences(context).edit()
+                    .putString(context.getString(R.string.download_error), e.getLocalizedMessage())
+                    .apply();
+            Log.d(TAG, "getRoutineJson: " + e.getLocalizedMessage());
         }
 //        return FAILED;
         return null;

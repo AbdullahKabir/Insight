@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:43 PM
+  ~ Modified By: shaafi
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.apphousebd.austhub">
 
@@ -16,11 +26,52 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
+        android:name=".mainUi.AustHub"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- alarm receiver -->
+
+        <receiver android:name=".backgroundTasks.Receiver">
+            <intent-filter>
+                <action android:name="com.apphousebd.austhub.backgroundTasks.Receiver" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".backgroundTasks.DataDownloadService" />
+
+        <service android:name=".services.AustHubFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".services.AustHubFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!--
+             Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
         <activity
             android:name=".mainUi.activities.BaseActivity"
             android:label="@string/app_name"
@@ -57,19 +108,11 @@
         <activity
             android:name=".userAuth.SignUp"
             android:label="@string/sign_up"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert">
+            android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name=".mainUi.activities.ResultDisplayActivity"
             android:label="@string/title_activity_result_display"
-            android:parentActivityName=".mainUi.activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.apphousebd.austhub.mainUi.activities.MainActivity"/>
-        </activity>
-        <activity
-            android:name=".mainUi.activities.RoutineDisplayActivity"
             android:parentActivityName=".mainUi.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -107,15 +150,6 @@
         </activity>
         <activity android:name=".mainUi.activities.reminder.EditReminder">
         </activity>
-
-        <!-- alarm receiver -->
-
-        <receiver android:name=".backgroundTasks.Receiver">
-            <intent-filter>
-                <action android:name="com.apphousebd.austhub.backgroundTasks.Receiver"/>
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".mainUi.activities.UpdateActivity"
             android:parentActivityName=".mainUi.activities.MainActivity"
@@ -124,7 +158,27 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".mainUi.activities.MainActivity"/>
         </activity>
-        <activity android:name=".userAuth.UserProfileActivity">
+        <activity
+            android:name=".userAuth.UserProfileActivity"
+            android:parentActivityName=".mainUi.activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainUi.activities.MainActivity" />
+        </activity>
+        <activity android:name=".mainUi.AppCompatPreferenceActivity"></activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="36fd5d85cd1ca2c31f17106c7921ab535feb46f6" />
+
+        <activity
+            android:name=".mainUi.ShowNotificationDetailsActivity"
+            android:label="@string/title_activity_show_notification_details"
+            android:parentActivityName=".mainUi.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.apphousebd.austhub.mainUi.activities.MainActivity" />
         </activity>
     </application>
 

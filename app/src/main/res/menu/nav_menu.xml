@@ -1,13 +1,24 @@
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:43 PM
+  ~ Modified By: shaafi
+  -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.apphousebd.austhub.mainUi.activities.BaseActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.apphousebd.austhub.mainUi.activities.BaseActivity">
 
     <group android:checkableBehavior="single">
 
         <item
             android:id="@+id/action_home"
             android:icon="@drawable/ic_home"
-            android:title="Home"/>
+            android:title="@string/home" />
 
 
         <item
@@ -28,7 +39,7 @@
         <item
             android:id="@+id/action_result"
             android:icon="@drawable/ic_results"
-            android:title="Results"/>
+            android:title="@string/results" />
 
         <item
 
@@ -43,14 +54,24 @@
                         android:title="@string/action_settings"/>
 
                     <item
+                        android:id="@+id/action_rate_us"
+                        android:icon="@android:drawable/star_off"
+                        android:title="@string/rate_us" />
+
+                    <item
                         android:id="@+id/action_us"
                         android:icon="@drawable/ic_info"
                         android:title="@string/about_us"/>
 
-                    <!--<item-->
-                    <!--android:id="@+id/action_check_update"-->
-                    <!--android:icon="@drawable/ic_sync"-->
-                    <!--android:title="@string/check_for_update"/>-->
+                    <item
+                        android:id="@+id/action_logout"
+                        android:icon="@drawable/ic_logout"
+                        android:title="@string/logout" />
+
+                    <item
+                        android:id="@+id/action_check_update"
+                        android:icon="@drawable/ic_sync"
+                        android:title="@string/check_for_update" />
 
                 </group>
             </menu>

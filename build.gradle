@@ -1,3 +1,14 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/26/18 4:50 PM
+ * Modified By: shaafi
+ */
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
@@ -5,16 +16,20 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.google.gms:google-services:3.1.1'
+
+        classpath 'com.google.firebase:firebase-plugins:1.1.1'
     }
 }
 
 allprojects {
     repositories {
+        maven { url "https://maven.google.com" }
+        google()
         jcenter()
         maven { url "https://jitpack.io" }
     }

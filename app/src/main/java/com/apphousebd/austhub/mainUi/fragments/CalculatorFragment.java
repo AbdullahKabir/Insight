@@ -1,6 +1,19 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:43 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.mainUi.fragments;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
@@ -19,15 +32,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apphousebd.austhub.R;
 import com.apphousebd.austhub.dataBase.CgpaDatabaseHelper;
+import com.apphousebd.austhub.dataModel.UserModel;
 import com.apphousebd.austhub.dataModel.cgpaDataModel.CGPACalculation;
 import com.apphousebd.austhub.dataModel.courseDataModel.CourseData;
 import com.apphousebd.austhub.dataModel.courseDataModel.CourseModel;
 import com.apphousebd.austhub.dataModel.courseDataModel.CourseTableConstants;
 import com.apphousebd.austhub.mainUi.activities.ResultDisplayActivity;
 import com.apphousebd.austhub.utilities.Animations;
+import com.apphousebd.austhub.utilities.Utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,12 +53,8 @@ import java.util.List;
 
 import static android.text.InputType.TYPE_CLASS_NUMBER;
 import static android.text.InputType.TYPE_NUMBER_FLAG_SIGNED;
-import static com.apphousebd.austhub.mainUi.activities.MainActivity.getStudentYearAndSemester;
 import static com.apphousebd.austhub.mainUi.activities.ResultDisplayActivity.IS_SAVED;
 import static com.apphousebd.austhub.mainUi.activities.ResultDisplayActivity.RESULT_STRING;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_DEPT;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_SEMESTER;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_YEAR;
 
 
 public class CalculatorFragment extends Fragment {
@@ -72,6 +84,7 @@ public class CalculatorFragment extends Fragment {
     CourseModel mCourseModel;
     List<String> courses;
 
+    private UserModel userModel;
 
     public CalculatorFragment() {
         // Required empty public constructor
@@ -90,14 +103,14 @@ public class CalculatorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calculator, container, false);
 
         ///displaying semester
-        semesterText = (TextView) view.findViewById(R.id.user_year_semester_section_calculator);
+        semesterText = view.findViewById(R.id.user_year_semester_section_calculator);
         Animations.setScaleXAnimation(semesterText);
 
         //ref of the container that will hold the edit texts
-        mContainerLayout = (LinearLayout) view.findViewById(R.id.mark_taking_linear_layout);
-        mLayout = (LinearLayout) view.findViewById(R.id.content_calculator);
+        mContainerLayout = view.findViewById(R.id.mark_taking_linear_layout);
+        mLayout = view.findViewById(R.id.content_calculator);
         //button for calculating cgpa
-        mCgpaBtn = (Button) view.findViewById(R.id.calculate_cgpa_btn);
+        mCgpaBtn = view.findViewById(R.id.calculate_cgpa_btn);
         mCgpaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,15 +118,13 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
-        mCreditText = (TextView) view.findViewById(R.id.calculate_text);
+        mCreditText = view.findViewById(R.id.calculate_text);
 
         //getting database helper ref
         helper = new CgpaDatabaseHelper(getContext());
 
         //update database
         updateDatabase();
-
-        Log.i(TAG, "onCreate: year: " + STD_YEAR + " sem: " + STD_SEMESTER);
 
         return view;
     }
@@ -124,21 +135,28 @@ public class CalculatorFragment extends Fragment {
 
         Log.i(TAG, "onStart");
 
-        getStudentYearAndSemester(getContext());
+        userModel = Utils.getUserModel(getActivity().getApplicationContext());
+        if (userModel == null)
+            getActivity().finish();
+        else {
 
-        ///displaying semester
-        Typeface typeface = Typeface.createFromAsset(
-                getContext().getAssets(), "fonts/DiplomataSC-Regular.ttf");
-        semesterText.setTypeface(typeface);
-        semesterText.setText("Semester: " + STD_YEAR + "." + STD_SEMESTER);
+            ///displaying semester
+            Typeface typeface = Typeface.createFromAsset(
+                    getContext().getAssets(), "fonts/DiplomataSC-Regular.ttf");
+            semesterText.setTypeface(typeface);
+            semesterText.setText(String.format("Semester: %s.%s", userModel.getYear(), userModel.getSemester()));
 
-        if (STD_DEPT.equals("cse")) {
+            if (userModel.getDept().equals("cse")) {
 
-            fetchDataFromDatabase(STD_YEAR, STD_SEMESTER);
-        } else {
-            fetchDataFromTxtFile();
+                fetchDataFromDatabase(
+                        Integer.parseInt(userModel.getYear()),
+                        Integer.parseInt(userModel.getSemester())
+                );
+
+            } else {
+                fetchDataFromTxtFile();
+            }
         }
-
     }
 
     @Override
@@ -157,14 +175,13 @@ public class CalculatorFragment extends Fragment {
         helper.openDatabase();
 
         //setting the edit texts
-        // TODO: 4/26/2017 uncomment the line
         if (courses != null && courses.size() > 0) {
-            mCreditText.setText("Enter Marks:");
+            mCreditText.setText(R.string.enter_marks);
             mCgpaBtn.setVisibility(View.VISIBLE);
             setLayoutWithTextInputLayout(courses.size());
         } else {
             mCgpaBtn.setVisibility(View.GONE);
-            mCreditText.setText("Sorry No Course Data Found!");
+            mCreditText.setText(R.string.no_data_found);
         }
     }
 
@@ -193,7 +210,8 @@ public class CalculatorFragment extends Fragment {
 
     private void fetchDataFromTxtFile() {
         BufferedReader reader = null;
-        String fileName = "credits/" + STD_DEPT.toUpperCase() + STD_YEAR + STD_SEMESTER + ".txt";
+        String fileName = "credits/" + userModel.getDept().toUpperCase() +
+                userModel.getYear() + userModel.getSemester() + ".txt";
 
         Log.d(TAG, "fetchDataFromTxtFile: " + fileName);
 
@@ -229,9 +247,24 @@ public class CalculatorFragment extends Fragment {
 
             Log.d(TAG, courses.toString() + ", " + credits.toString());
 
-            mCourseModel = new CourseModel(STD_YEAR, STD_SEMESTER, courses.toString(), credits.toString());
+            if (credits.toString().contains("No Credit")) {
+                Toast.makeText(getContext(), "Sorry, no course credit found!\n", Toast.LENGTH_SHORT).show();
+                Dialog dialog = new AlertDialog.Builder(getContext())
+                        .setTitle("Data missing")
+                        .setMessage("Looks like some data of your credit is missing. Please contact with the" +
+                                " developer or send feedback from settings and give the updated data.")
+                        .setPositiveButton("Ok", null)
+                        .create();
+                dialog.show();
+            } else {
 
-            updateUi(mCourseModel.getCourseTitles());
+                mCourseModel = new CourseModel(
+                        Integer.parseInt(userModel.getYear()),
+                        Integer.parseInt(userModel.getSemester()),
+                        courses.toString(), credits.toString());
+
+                updateUi(mCourseModel.getCourseTitles());
+            }
 
         } catch (IOException e) {
             //log the exception

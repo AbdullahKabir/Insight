@@ -1,3 +1,14 @@
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:41 PM
+  ~ Modified By: shaafi
+  -->
+
 <resources>
 
     <!-- Base application theme. -->
@@ -26,8 +37,8 @@
 
     <style name="DialogTheme" parent="Theme.AppCompat.Dialog.Alert"/>
 
-    <style name="CustomProgressBar" parent="android:Widget.ProgressBar.Horizontal">
-        <item name="android:indeterminateOnly">false</item>
+    <style name="CustomProgressBar" parent="Base.Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">true</item>
         <item name="android:progressDrawable">@drawable/custom_progressbar_horizontal</item>
         <item name="android:minHeight">10dp</item>
         <item name="android:maxHeight">20dp</item>

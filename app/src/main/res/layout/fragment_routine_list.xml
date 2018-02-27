@@ -1,10 +1,21 @@
+<!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:43 PM
+  ~ Modified By: shaafi
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:context="com.apphousebd.austhub.mainUi.fragments.RoutineListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.apphousebd.austhub.mainUi.fragments.RoutineListFragment">
 
     <TextView
         android:id="@+id/activity_routine_clock_day"
@@ -17,42 +28,82 @@
         tools:text="Sun"/>
 
     <LinearLayout
-        android:id="@+id/user_year_semester_section_container"
+        android:id="@+id/user_year_semester_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_routine_clock_day"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@android:color/transparent">
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/user_year_semester_section"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/user_section_container"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textColor="#ef0054"/>
+            android:layout_weight="3"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/routine_year_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/std_year_title"
+                android:gravity="center"
+                tools:listitem="@layout/support_simple_spinner_dropdown_item" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#080000" />
+
+            <Spinner
+                android:id="@+id/routine_semester_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/std_sem_title"
+                tools:listitem="@layout/support_simple_spinner_dropdown_item" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#080000" />
+
+            <Spinner
+                android:id="@+id/routine_section_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/std_section_title"
+                tools:listitem="@layout/support_simple_spinner_dropdown_item" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/routine_show_btn"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/user_year_semester_container"
+        android:background="#24a6ba" />
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/routine_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/user_year_semester_section_container"
+        android:layout_below="@id/user_year_semester_container"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:keepScreenOn="true"
         android:scaleType="fitXY"/>
-
-    <ListView
-        android:id="@+id/routine_day_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/user_year_semester_section_container"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:divider="#085c80"
-        android:dividerHeight="2dp"
-        android:drawSelectorOnTop="true"
-        android:visibility="gone"/>
 
 </RelativeLayout>

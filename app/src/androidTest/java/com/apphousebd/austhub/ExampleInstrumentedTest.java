@@ -1,3 +1,14 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:42 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub;
 
 import android.content.Context;
@@ -7,7 +18,7 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumentation test, which will execute on an Android device.

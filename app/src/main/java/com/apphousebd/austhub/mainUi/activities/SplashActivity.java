@@ -1,123 +1,288 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:43 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.mainUi.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.apphousebd.austhub.BuildConfig;
 import com.apphousebd.austhub.R;
-import com.apphousebd.austhub.userAuth.UserSignIn;
+import com.apphousebd.austhub.backgroundTasks.DownloadRoutineAsyncTaskLoader;
+import com.apphousebd.austhub.dataBase.RoutineDatabase;
+import com.apphousebd.austhub.dataModel.UserModel;
+import com.apphousebd.austhub.userAuth.SignUp;
+import com.apphousebd.austhub.utilities.Constants;
 import com.apphousebd.austhub.utilities.JsonHelper;
 import com.apphousebd.austhub.utilities.NetworkConnectionManager;
+import com.apphousebd.austhub.utilities.Utils;
+import com.crashlytics.android.Crashlytics;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Arrays;
 
-import okhttp3.Response;
+import io.fabric.sdk.android.Fabric;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static com.apphousebd.austhub.dataModel.routineDataModel.RoutineTableConstants.TABLE_NAME;
 import static com.apphousebd.austhub.mainUi.activities.DialogActivity.ERROR;
 import static com.apphousebd.austhub.mainUi.activities.DialogActivity.INTERNET_ON;
 import static com.apphousebd.austhub.utilities.NetworkConnectionManager.FAILED;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
+    public static final int SPLASH_REQUEST = 1011;
     private static final String TAG = "SplashActivity";
-
     private static final int REQUEST_CODE = 1010;
+    private static final int RC_SIGN_IN = 1110;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1101;
 
-    private static final int SPLASH_TIME_OUT = 1200;
-
-    //std info
-    public static int STD_YEAR = 0;
-    public static int STD_SEMESTER = 0;
-    public static String STD_DEPT = "";
-
-    ///progress dailog
+    ///progress dialog
     ProgressBar mProgressBar;
     LinearLayout mLinearLayout;
-
     GifImageView mGifImageView;
+    private CoordinatorLayout mContainerCoordinatorLayout;
+
+    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
+        MobileAds.initialize(this, "ca-app-pub-5940609524922490~8528862964");
+
+
         if (getResources().getConfiguration().orientation != ORIENTATION_LANDSCAPE) {
             setContentView(R.layout.activity_splash);
         } else {
             setContentView(R.layout.activity_splash_land);
         }
 
-        mLinearLayout = (LinearLayout) findViewById(R.id.splash_download_container);
+        mLinearLayout = findViewById(R.id.splash_download_container);
+        mContainerCoordinatorLayout = findViewById(R.id.splash_container);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.splash_progress);
+        mProgressBar = findViewById(R.id.splash_progress);
         mProgressBar.setMax(100);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (checkPlayServices()) {
 
-        String year = preferences.getString(this.getString(R.string.std_year), "0");
-        String semester = preferences.getString(getString(R.string.std_sem), "0");
+            //checking for permissions
+            int permission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            );
 
-        STD_YEAR = Integer.parseInt(year);
-        STD_SEMESTER = Integer.parseInt(semester);
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-        //checking for permissions
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        );
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
 
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    showPermissionRequestReason();
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                } else {
 
-                showPermissionRequestReason();
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE);
+                }
+            } else {
+                proceedToApp();
+            }
+        }
+    }
+
+
+    private void proceedToApp() {
+
+//        getting the firebase database reference
+        reference = FirebaseDatabase.getInstance().getReference("user");
+        reference.keepSynced(true);
+
+//        getting the user, if any
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //gif //asset file
+        try {
+            GifDrawable gifFromAssets = new GifDrawable(getAssets(), "loading.gif");
+            mGifImageView = findViewById(R.id.gif);
+            mGifImageView.setVisibility(View.VISIBLE);
+            mGifImageView.setImageDrawable(gifFromAssets);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+//          if no current sign in user if found
+            if (firebaseUser == null) {
+
+                getFirebaseAuthUser();
 
             } else {
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        REQUEST_CODE);
+                checkUserInDatabase(firebaseUser);
             }
-        } else {
-//            List<RoutineServerJsonModel> models = new ArrayList<>();
-//
-//            RoutineServerJsonModel model =
-//                    new RoutineServerJsonModel("1", "2_2", "section_c", CSE22C);
-//            models.add(model);
-////
-////            RoutineServerJsonModel model1 =
-////                    new RoutineServerJsonModel("2", "2_1", "section_c", CSE22C);
-////            models.add(model1);
-//
-//            String j = JsonHelper.encodeToJson(this, models);
-//
-//            JsonHelper.decodeJsonData(this, j);
-            proceedToApp();
+
+        }
+    }
+
+    private void getFirebaseAuthUser() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(
+                                Arrays.asList(
+                                        new AuthUI.IdpConfig.EmailBuilder().build(),
+                                        new AuthUI.IdpConfig.PhoneBuilder()
+                                                .setDefaultCountryIso("bd")
+                                                .build(),
+                                        new AuthUI.IdpConfig.GoogleBuilder().build()
+                                ))
+                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+    /**
+     * Checking if the current authorized user is in the firebase database or not,
+     * if in database, means user already registered, then proceed to main page
+     * otherwise register the user
+     *
+     * @param firebaseUser FirebaseUser
+     */
+    public void checkUserInDatabase(final FirebaseUser firebaseUser) {
+        final String userId = firebaseUser.getUid();
+
+        Log.d(TAG, "checkUserInDatabase: user provider: " + firebaseUser.getProviders().size());
+        for (String provider : firebaseUser.getProviders()) {
+            Log.d(TAG, "checkUserInDatabase: provider: " + provider);
         }
 
+        Log.d(TAG, "checkUserInDatabase");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(userId).exists()) {
+
+                    UserModel model = dataSnapshot.child(userId).getValue(UserModel.class);
+                    Utils.saveUser(getApplicationContext(), model);
+
+                    proceedToMain(model);
+
+                } else {
+                    signUpUser();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                showSnackbar(R.string.unknown_error);
+            }
+        });
+
+    }
+
+    private void signUpUser() {
+        startActivityForResult(new Intent(SplashActivity.this, SignUp.class),
+                SPLASH_REQUEST);
+    }
+
+    private void proceedToMain(final UserModel model) {
+        Log.d(TAG, "proceedToMain");
+        if (model == null) {
+            Log.d(TAG, "proceedToMain: model is null");
+            signUpUser();
+            return;
+        }
+
+        RoutineDatabase database = new RoutineDatabase(getBaseContext());
+        long count = database.getTableItemCount(TABLE_NAME + "_" + model.getDept());
+        database.closeDatabase();
+
+        if (Utils.getDataVersion(getApplicationContext()) == 0 && count <= 0) {
+            Log.d(TAG, "proceedToMain: downloading data");
+
+            downloadData(model.getDept());
+        } else {
+            Log.d(TAG, "proceedToMain: making intent");
+            Intent mainIntent = new Intent(getBaseContext(), MainActivity.class);
+            mainIntent.setAction("user");
+            mainIntent.putExtra(getString(R.string.user), model);
+            startActivity(mainIntent);
+            mGifImageView.setVisibility(View.GONE);
+            Log.d(TAG, "proceedToMain: intent started");
+            finish();
+        }
+    }
+
+    private void showSnackbar(int id) {
+        if (mGifImageView != null) {
+            mGifImageView.setVisibility(View.GONE);
+        }
+        Snackbar snackbar = Snackbar
+                .make(mContainerCoordinatorLayout, id, Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        proceedToApp();
+                    }
+                });
+
+// Changing message text color
+        snackbar.setActionTextColor(Color.RED);
+
+// Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.YELLOW);
+        snackbar.show();
     }
 
     private void showPermissionRequestReason() {
@@ -162,184 +327,171 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    private void proceedToApp() {
-        //gif //asset file
-        try {
-            GifDrawable gifFromAssets = new GifDrawable(getAssets(), "loading.gif");
-            mGifImageView = (GifImageView) findViewById(R.id.gif);
-            mGifImageView.setImageDrawable(gifFromAssets);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_SIGN_IN) {
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            new Handler().postDelayed(new Runnable() {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
 
-        /*
-         * Showing splash screen with a timer. This will be useful when you
-         * want to show case your app logo / company
-         */
-
-                @Override
-                public void run() {
-
-                    if (STD_YEAR == 0 && STD_SEMESTER == 0) {
-
-//                        new DownloadRoutineFromServer(
-//                                SplashActivity.this,
-//                                SplashActivity.this,
-//                                mProgressBar,
-//                                mLinearLayout).execute();
-//
-//                        new CheckStdInfo(SplashActivity.this).execute();
-                        startActivity(new Intent(getApplicationContext(),
-                                UserSignIn.class));
-                        finish();
-
-                    } else {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
-                    }
-
+            // Successfully signed in
+            if (resultCode == RESULT_OK && response != null) {
+                checkUserInDatabase(FirebaseAuth.getInstance().getCurrentUser());
+                return;
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // User pressed back button
+                    showSnackbar(R.string.sign_in_cancelled);
+                    return;
                 }
-            }, SPLASH_TIME_OUT);
+
+                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    showSnackbar(R.string.no_internet_connection);
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    showSnackbar(R.string.unknown_error);
+                    return;
+                }
+            }
+
+            showSnackbar(R.string.unknown_error);
+        } else if (requestCode == SPLASH_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if (data.getAction() != null) {
+                    if (data.getAction().equals(Constants.DONE)) {
+                        finish();
+                    } else if (data.getAction().equals(Constants.DOWNLOAD)) {
+                        String dept = String.valueOf(data.getData());
+
+                        RoutineDatabase database = new RoutineDatabase(getBaseContext());
+                        long count = database.getTableItemCount(TABLE_NAME + "_" + dept);
+                        database.closeDatabase();
+
+                        Log.d(TAG, "onActivityResult: dept: " + dept);
+
+                        if (count == 0) {
+                            downloadData(dept);
+                        }
+                    }
+                }
+            }
         }
     }
 
-    class CheckStdInfo extends AsyncTask<Void, Integer, Void> {
+    private void downloadData(String dept) {
+        mGifImageView.setVisibility(View.GONE);
+        mLinearLayout.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+//        DownloadRoutineFromServer server =
+//                new DownloadRoutineFromServer(this, mProgressBar, mLinearLayout, dept);
+//        server.execute();
 
-        Context mContext;
-        String fileString = null;
-        int target = 0;
+        Bundle bundle = new Bundle();
+        bundle.putString("dept", dept);
 
-        CheckStdInfo(Context context) {
-            mContext = context;
-        }
+        getSupportLoaderManager().restartLoader(11011, bundle, this).forceLoad();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (STD_YEAR == 0 && STD_SEMESTER == 0) {
-                // progressDialog.show();
-                mProgressBar.setProgress(0);
-                mLinearLayout.setVisibility(View.VISIBLE);
-                mGifImageView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new DownloadRoutineAsyncTaskLoader(getBaseContext(), args.getString("dept"));
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String fileString) {
+        Intent i = null;
+
+        Log.d(TAG, "onLoadFinished: string: " + fileString);
+
+        //true meaning that the data is already downloaded
+        if (mLinearLayout != null && !TextUtils.isEmpty(fileString) &&
+                !fileString.contains(FAILED)) {
+            //at this point there is no data saved for the user
+
+            //decode the data
+            Log.d(TAG, "onLoadFinished: file string: " + fileString);
+            String[] results = fileString.split(">");
+            if (results.length > 1) {
+
+                i = new Intent(getBaseContext(), MainActivity.class);
+
+                Log.i(TAG, "adding in database: " + results[results.length - 2] + " " + results[results.length - 1]);
+                JsonHelper.decodeJsonData(getBaseContext(), results[results.length - 1]);
+
+                Log.d(TAG, "onPostExecute: version: " + Long.parseLong(results[results.length - 2].trim()));
+                Utils.setDataVersion(getBaseContext().getApplicationContext(), Long.parseLong(results[results.length - 2].trim()));
+
+            } else {
+
+                i = new Intent(getBaseContext(), DialogActivity.class);
+
+                i.putExtra(ERROR, getBaseContext().getString(R.string.splah_data_fetch_error_msg));
             }
 
-        }
+        } else if (TextUtils.isEmpty(fileString) || fileString.equals(FAILED)) {
 
-        @Override
-        protected Void doInBackground(Void... voids) {
+            //something wrong,so call error activity to show error dialog
 
-            if (STD_YEAR == 0 && STD_SEMESTER == 0) {
-                Response response = NetworkConnectionManager.getRoutineJson(mContext);
-                Response response2 = NetworkConnectionManager.getRoutineJson(mContext);
+            i = new Intent(getBaseContext(), DialogActivity.class);
 
-                InputStream inputStream = null;
+            if (NetworkConnectionManager.isConnectedToInternet(getBaseContext())) {
 
-                try {
-                    if (response != null && response2 != null
-                            && response.isSuccessful() && response2.isSuccessful()) {
-                        inputStream = response.body().byteStream();
-                        byte[] buff = new byte[1024 * 4];
-                        int downloaded = 0;
-                        target = (int) response.body().contentLength();
-
-                        //publishProgress(target);
-                        fileString = response2.body().string();
-//                        Log.i(TAG, "doInBackground: text: " + fileString);
-//                        JsonHelper.decodeJsonData(mContext, fileString);
-                        while (true) {
-                            int read = inputStream.read(buff);
-                            if (read == -1) {
-                                break;
-                            }
-                            //write buffer
-                            downloaded += read;
-                            publishProgress(downloaded);
-                            if (isCancelled()) {
-                                fileString = FAILED;
-                                return null;
-                            }
-                        }
-                    } else {
-                        fileString = FAILED;
-                    }
-                } catch (IOException e) {
-                    fileString = FAILED;
-                    e.printStackTrace();
-                    Log.e(TAG, "doInBackground: " + e.getLocalizedMessage(), e);
-                } finally {
-                    if (inputStream != null) {
-                        try {
-                            inputStream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                Log.i(TAG, "doInBackground: " + fileString);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            mProgressBar.setMax(target);
-            mProgressBar.setProgress(values[0]);
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-//            mLinearLayout.setVisibility(View.GONE);
-//            mGifImageView.setVisibility(View.VISIBLE);
-            // This method will be executed once the timer is over
-            // Start your app main activity
-            Intent i = null;
-
-            //true meaning that the data is already downloaded
-            if (STD_YEAR != 0 && STD_SEMESTER != 0) {
-
-                i = new Intent(SplashActivity.this, MainActivity.class);
-
-            } else if (!fileString.equals(FAILED) && !TextUtils.isEmpty(fileString)) {
-                //at this point there is no data saved for the user
-
-                //decode the data
-//                Log.i(TAG, "adding in database: " + fileString);
-                JsonHelper.decodeJsonData(SplashActivity.this, fileString);
-
-                if (STD_YEAR == 0 && STD_SEMESTER == 0) {
-                    //this means the app is loaded
-                    i = new Intent(mContext, UserSignIn.class);
-
-                }
-
-            } else if (fileString.equals(FAILED) || TextUtils.isEmpty(fileString)) {
-
-                //something wrong,so call error activity to show error dialog
-
-                i = new Intent(mContext, DialogActivity.class);
-
-
-                if (NetworkConnectionManager.isConnectedToInternet(mContext)) {
-
-                    i.putExtra(ERROR, getString(R.string.splah_data_fetch_error_msg));
-
+                String error = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                        .getString(getString(R.string.download_error), "");
+                if (!TextUtils.isEmpty(error) && error.contains("failed to connect")) {
+                    i.putExtra(ERROR, "Couldn't connect to the server. Please try again." +
+                            "\nIf error still exists, please inform the developers");
+                    i.putExtra("inform", true);
                 } else {
+                    i.putExtra(ERROR, getString(R.string.splah_data_fetch_error_msg));
+                }
+
+            } else {
 
 //                    Log.e("splash", "onPostExecute: inactive network");
 
-                    i.putExtra(ERROR, getString(R.string.splash_internet_error_msg));
+                i.putExtra(ERROR, getString(R.string.splash_internet_error_msg));
 
-                    i.putExtra(INTERNET_ON, true);
-                }
+                i.putExtra(INTERNET_ON, true);
             }
+        }
 
-            if (i != null) startActivity(i);
-
-            // close this activity
+        // close this activity
+        if (i != null) {
+            startActivity(i);
             finish();
         }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     *
+     * @return boolean
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                Toast.makeText(this, "This device is not supported", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

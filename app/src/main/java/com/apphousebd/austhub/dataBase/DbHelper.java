@@ -1,3 +1,14 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:41 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.dataBase;
 
 import android.content.Context;
@@ -25,7 +36,7 @@ public class DbHelper extends SQLiteOpenHelper {
      ***************************************************************************/
 
     private static String DB_NAME = "austhub.db";
-    private static int DB_VERSION = 1;
+    private static int DB_VERSION = 3;
 
 
     public DbHelper(Context context) {
@@ -35,7 +46,14 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         ///creating table for storing routine
-        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_ARCH);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_BBA);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_CE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_CSE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_EEE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_IPE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_ME);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_TE);
 
         ///creating table for storing courses
         sqLiteDatabase.execSQL(CourseTableConstants.CREATE_TABLE);
@@ -54,8 +72,31 @@ public class DbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CourseTableConstants.CREATE_TABLE);
 
         ///routine
-        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE);
-        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE);
+        ///creating table for storing routine
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_ARCH);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_ARCH);
+
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_BBA);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_BBA);
+
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_CE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_CE);
+
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_CSE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_CSE);
+
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_EEE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_EEE);
+
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_IPE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_IPE);
+
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_ME);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_ME);
+
+        sqLiteDatabase.execSQL(RoutineTableConstants.DROP_TABLE_TE);
+        sqLiteDatabase.execSQL(RoutineTableConstants.CREATE_TABLE_TE);
+
 
         ///reminder
         sqLiteDatabase.execSQL(ReminderTableConstants.DROP_TABLE);

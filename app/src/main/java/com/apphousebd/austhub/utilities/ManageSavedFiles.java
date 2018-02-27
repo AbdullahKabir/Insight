@@ -1,6 +1,24 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:41 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.utilities;
 
 import android.os.Environment;
+import android.text.TextUtils;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +27,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Asif Imtiaz Shaafi on 2016.
@@ -93,8 +113,9 @@ public class ManageSavedFiles {
      * look all files that are in the folder and get the files with .txt and .pdf
      * extension
      ************************************************************************************/
-    public static List<String> getSavedFileList() {
+    public static List<String> getSavedFileList(String userID) {
         List<String> fileList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_FILE_DATABASE);
 
         if (hasExternalStorageAndDirExists()) {
             for (File file : dir.listFiles()) {
@@ -102,6 +123,13 @@ public class ManageSavedFiles {
                         file.getName().endsWith(EX_PDF)) {
                     String name = file.getName();
                     fileList.add(name);
+                    if (name.contains(EX_TXT)) {
+                        String fileContent = getFileContent(name);
+                        if (!TextUtils.isEmpty(fileContent)) {
+                            saveResultFileInFirebase(userID, name.replace(EX_TXT, ""), fileContent);
+                            file.delete();
+                        }
+                    }
                 }
             }
         }
@@ -158,21 +186,37 @@ public class ManageSavedFiles {
     /***********************************************************************************
      * checks if the user has a file saved in same name
      ************************************************************************************/
-    public static boolean hasNoDuplicates(String fileName) {
+    public static boolean hasNoDuplicates(final String userID, final String fileName) {
 
-        if (hasExternalStorageAndDirExists()) {
-            for (File file : dir.listFiles()) {
-                if (file.getName().endsWith(EX_TXT) ||
-                        file.getName().endsWith(EX_PDF)) {
-                    String name = file.getName();
-                    if (name.equals(fileName))
-                        return false;
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_FILE_DATABASE);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(userID).child(fileName).exists()) {
+
                 }
             }
-        }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         return true;
     }
 
 
+    public static boolean saveResultFileInFirebase(String userID, String fileName, String resultString) {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_FILE_DATABASE);
+        if (!TextUtils.isEmpty(resultString)) {
+            Map<String, String> fileMap = new HashMap<>();
+            fileMap.put(fileName, resultString);
+            reference.child(userID).child(fileName).setValue(fileMap);
+            return true;
+        }
+
+        return false;
+    }
 }

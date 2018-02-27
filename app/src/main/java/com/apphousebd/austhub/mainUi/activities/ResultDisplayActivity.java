@@ -1,40 +1,48 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:41 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.mainUi.activities;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apphousebd.austhub.R;
+import com.apphousebd.austhub.dataModel.UserModel;
+import com.apphousebd.austhub.utilities.Constants;
 import com.apphousebd.austhub.utilities.ManageSavedFiles;
 import com.apphousebd.austhub.utilities.MyTextWatcher;
+import com.apphousebd.austhub.utilities.Utils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_SEMESTER;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_YEAR;
-import static com.apphousebd.austhub.utilities.ManageSavedFiles.SAVING_FOLDER_NAME;
 
 public class ResultDisplayActivity extends AppCompatActivity {
 
@@ -45,31 +53,30 @@ public class ResultDisplayActivity extends AppCompatActivity {
     SimpleDateFormat mSimpleDateFormat;
     private String mResultString;
     private FloatingActionButton fab;
-    private SharedPreferences preferences;
     ///file name
     private String fileName;
-    ///extension for file
-    private String fileEx;
     ///dialogs
     private AlertDialog.Builder mBuilder;
     private Dialog mDialog;
+
+    private UserModel mUserModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_display);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView resultShowingTextView = (TextView) findViewById(R.id.result_text_view);
-        fab = (FloatingActionButton) findViewById(R.id.result_fab);
+        TextView resultShowingTextView = findViewById(R.id.result_text_view);
+        fab = findViewById(R.id.result_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                promptAndSaveFile();
+                promptUserToGiveFileName();
             }
         });
 
@@ -84,7 +91,7 @@ public class ResultDisplayActivity extends AppCompatActivity {
 
         boolean isFileSaved = getIntent().getBooleanExtra(IS_SAVED, false);
 
-        /***********************************************************************************
+        /* **********************************************************************************
          if the file is not saved that is the result is not saved then show the fab icon
          so that user has the option to save the file,
          otherwise hide the icon as user don't need to save the file
@@ -100,30 +107,14 @@ public class ResultDisplayActivity extends AppCompatActivity {
         resultShowingTextView.setText(mResultString);
     }
 
-    private void promptAndSaveFile() {
-
-        ///checking if the user has chosen any default file extension for saving
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        fileEx = preferences.getString(getString(R.string.file_save_mode), null);
-
-        if (fileEx == null) {
-            promptUserToSelectDefaultSavingOption();
-        } else {
-            //checking for permissions
-            int permission = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            );
-
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        REQUEST_CODE);
-            } else {
-                promptUserToGiveFileName();
-            }
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mUserModel = Utils.getUserModel(getApplicationContext());
+        if (mUserModel == null)
+            finish();
     }
+
 
     private void promptUserToGiveFileName() {
         ///getting the reference of the view that will be shown to use to get the name input
@@ -131,10 +122,10 @@ public class ResultDisplayActivity extends AppCompatActivity {
                 .inflate(R.layout.saving_file_name_dialog, null);
 
         ///getting the refs of the edit texts containing the id/name
-        final EditText id1 = (EditText) savingView.findViewById(R.id.file_name_edit_text_1);
-        final EditText id2 = (EditText) savingView.findViewById(R.id.file_name_edit_text_2);
-        final EditText id3 = (EditText) savingView.findViewById(R.id.file_name_edit_text_3);
-        final EditText id4 = (EditText) savingView.findViewById(R.id.file_name_edit_text_4);
+        final EditText id1 = savingView.findViewById(R.id.file_name_edit_text_1);
+        final EditText id2 = savingView.findViewById(R.id.file_name_edit_text_2);
+        final EditText id3 = savingView.findViewById(R.id.file_name_edit_text_3);
+        final EditText id4 = savingView.findViewById(R.id.file_name_edit_text_4);
 
 
         ///adding the text listener that will watch the text changing and take the cursor to next
@@ -166,16 +157,33 @@ public class ResultDisplayActivity extends AppCompatActivity {
                                 id3.getText().toString() + "_" +
                                 id4.getText().toString() + "(" +
                                 ///adding year and semester
-                                STD_YEAR + "_" + STD_SEMESTER + ")" + fileEx;
+                                mUserModel.getYear() + "_" + mUserModel.getSemester()
+                                + ")";
 
-                        if (fileName.length() == 21) ///as 15_00_00_000(2_2).txt == 21 letters
+                        if (fileName.length() == 17) ///as 15_00_00_000(2_2) == 17 letters
                         {
-                            if (ManageSavedFiles.hasNoDuplicates(fileName)) {
-                                saveFile();
-                            } else {
 
-                                warnUserAboutDuplicate();
-                            }
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_FILE_DATABASE);
+                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.child(mUserModel.getuId()).child(fileName).exists()) {
+                                        warnUserAboutDuplicate();
+                                    } else {
+                                        saveFile();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(ResultDisplayActivity.this, "Result saving Cancelled!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
                         } else {
                             Toast.makeText(ResultDisplayActivity.this, "Sorry! Invalid ID!\n" +
                                     "Please Enter a valid ID", Toast.LENGTH_LONG).show();
@@ -204,7 +212,7 @@ public class ResultDisplayActivity extends AppCompatActivity {
         mBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
 
         mBuilder.setTitle("Warning!")
-                .setMessage("A file with same name is saved on your device!")
+                .setMessage("A file with same name is already saved!")
                 .setPositiveButton("Override", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -229,76 +237,28 @@ public class ResultDisplayActivity extends AppCompatActivity {
         mResultString = "Result saved on:\n" +
                 fileDate + "\n\n\n" + mResultString;
 
-        if (ManageSavedFiles.saveResultFile(fileName, mResultString)) {
+        if (ManageSavedFiles.saveResultFileInFirebase(mUserModel.getuId(), fileName, mResultString)) {
 
             ///hide the save icon
             fab.setVisibility(View.GONE);
 
             ///show the user the file name and location
-            Toast.makeText(ResultDisplayActivity.this, "Result Saved as \n" +
-                    fileName + "\n in Folder: \n" + SAVING_FOLDER_NAME, Toast.LENGTH_LONG).show();
+            Snackbar.make(
+                    findViewById(R.id.result_display_coordinator_layout),
+                    "Result Saved as " + fileName,
+                    Snackbar.LENGTH_LONG
+            ).setAction("Show", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity.CURRENT_INDEX = 4;
+                    finish();
+                }
+            }).show();
         } else {
             Toast.makeText(ResultDisplayActivity.this, "Result Could Not be Saved.\n" +
                             "Please Check Your External Storage is OK and Try Again!"
                     , Toast.LENGTH_LONG).show();
         }
-    }
-
-    /***********************************************************************************
-     * if the default saving option is not set then prompt the user for the 1st time
-     * to set the option and use it next time.. also tell the user where he/she can
-     * change it later
-     ************************************************************************************/
-    private void promptUserToSelectDefaultSavingOption() {
-
-        final List<String> saveOptionValue =
-                Arrays.asList(getResources().getStringArray(R.array.save_mode_values));
-        final List<String> saveOptions =
-                Arrays.asList(getResources().getStringArray(R.array.save_modes));
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice,
-                        saveOptions);
-
-        if (mDialog != null && mDialog.isShowing()) {
-            mDialog.cancel();
-        }
-
-        mBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
-
-        mBuilder.setTitle("Save As:")
-                .setIcon(android.R.drawable.ic_menu_save)
-                .setSingleChoiceItems(adapter, 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        fileEx = saveOptionValue.get(which);
-//                        Toast.makeText(ResultDisplayActivity.this, "selected: " + fileEx, Toast.LENGTH_SHORT).show();
-
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        if (fileEx == null)
-                            fileEx = saveOptionValue.get(0);
-
-                        //setting the save mode in pref
-                        PreferenceManager.setDefaultValues(getBaseContext(), R.xml.settings, true);
-                        preferences.edit()
-                                .putString(getString(R.string.file_save_mode), fileEx)
-                                .apply();
-
-                        ///telling the user where he/she can change the setting
-                        Toast.makeText(ResultDisplayActivity.this, "You can change the default option from\n" +
-                                "Settings>>Change Saving File Type ", Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(ResultDisplayActivity.this, "selected: " + fileEx, Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-        mDialog = mBuilder.create();
-        mDialog.show();
     }
 
     ///file permission

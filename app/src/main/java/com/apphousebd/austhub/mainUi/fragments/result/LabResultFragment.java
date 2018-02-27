@@ -1,3 +1,14 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:41 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.mainUi.fragments.result;
 
 
@@ -10,11 +21,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.apphousebd.austhub.R;
+import com.apphousebd.austhub.dataModel.UserModel;
 import com.apphousebd.austhub.utilities.OnlineResultFetch;
-
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_DEPT;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_SEMESTER;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_YEAR;
+import com.apphousebd.austhub.utilities.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +34,8 @@ public class LabResultFragment extends Fragment
 
     private WebView mLabWebView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private UserModel mUserModel;
 
     public LabResultFragment() {
         // Required empty public constructor
@@ -52,6 +63,13 @@ public class LabResultFragment extends Fragment
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mUserModel = Utils.getUserModel(getActivity().getApplicationContext());
+        if (mUserModel == null)
+            getActivity().finish();
+    }
 
     @Override
     public void onRefresh() {
@@ -61,8 +79,9 @@ public class LabResultFragment extends Fragment
     private void loadWebView() {
         OnlineResultFetch.loadUrl(
                 getContext(),
-                OnlineResultFetch.LAB_RESULT_BASE_URL + STD_DEPT + "_s_" +
-                        String.valueOf(STD_YEAR) + "_" + String.valueOf(STD_SEMESTER) +
+                OnlineResultFetch.LAB_RESULT_BASE_URL +
+                        mUserModel.getDept() + "_s_" +
+                        mUserModel.getYear() + "_" + mUserModel.getSemester() +
                         ".php",
 //                "https://www.google.com",
                 mLabWebView,

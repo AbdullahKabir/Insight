@@ -18,3 +18,24 @@
 
 -dontwarn com.squareup.okhttp.**
 -dontwarn okio**
+-dontwarn okhttp3.**
+-dontwarn javax.annotation.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# for firebase authentication
+-keepattributes Signature
+-keepattributes *Annotation*
+
+-ignorewarnings
+-keepclassmembers class com.apphousebd.austbub.dataModel.** {
+    *;
+}
+
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+    public static *** w(...);
+    public static *** e(...);
+}

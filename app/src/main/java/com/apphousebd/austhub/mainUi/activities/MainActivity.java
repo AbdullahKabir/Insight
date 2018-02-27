@@ -1,18 +1,26 @@
+/*
+ * Created by Asif Imtiaz Shaafi
+ *     Email: a15shaafi.209@gmail.com
+ *     Date: 2, 2018
+ *
+ * Copyright (c) 2018, AppHouseBD. All rights reserved.
+ *
+ * Last Modified on 2/27/18 1:41 PM
+ * Modified By: shaafi
+ */
+
 package com.apphousebd.austhub.mainUi.activities;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +31,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,21 +39,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apphousebd.austhub.R;
+import com.apphousebd.austhub.dataModel.UserModel;
 import com.apphousebd.austhub.mainUi.fragments.CalculatorFragment;
 import com.apphousebd.austhub.mainUi.fragments.HomeFragment;
 import com.apphousebd.austhub.mainUi.fragments.ReminderFragment;
 import com.apphousebd.austhub.mainUi.fragments.ResultFragment;
 import com.apphousebd.austhub.mainUi.fragments.RoutineListFragment;
-import com.apphousebd.austhub.userAuth.SignUp;
 import com.apphousebd.austhub.userAuth.UserProfileActivity;
-import com.apphousebd.austhub.utilities.ChangeDefaultColor;
+import com.apphousebd.austhub.utilities.Utils;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_DEPT;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_SEMESTER;
-import static com.apphousebd.austhub.mainUi.activities.SplashActivity.STD_YEAR;
 import static com.apphousebd.austhub.utilities.ManageImageFile.getSavedImg;
 
 
@@ -65,7 +75,6 @@ public class MainActivity extends AppCompatActivity
     //fragment tag array
     public static String[] fragmentTags = {HOME_TAG, ROUTINE_TAG, CALC_TAG,
             ALARM_TAG, RESULT_TAG};
-    public static int[] bgIds = {R.drawable.main_bg, R.drawable.routine_bg, R.drawable.routine_bg, R.drawable.reminder_bg};
     //currently using fragment tag
     public static String CURRENT_TAG = HOME_TAG; //initially home
     //titles
@@ -81,8 +90,12 @@ public class MainActivity extends AppCompatActivity
     protected ImageView mUserImage;
     private TextView titleCustomText;
     ///container of main activity fragment
-    private CoordinatorLayout mCoordinatorContainer;
+//    private CoordinatorLayout mCoordinatorContainer;
 
+    // user info
+    private UserModel mUserModel;
+
+    //    getting the fragment according to the selected index
     public static Fragment getFragment(int index) {
         switch (index) {
             case 0:
@@ -107,23 +120,31 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //getting student details
-    public static void getStudentYearAndSemester(Context context) {
-        SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(context);
-        String year = preferences.getString(context.getString(R.string.std_year), "0");
-        String semester = preferences.getString(context.getString(R.string.std_sem), "0");
-
-        STD_DEPT = preferences.getString(context.getString(R.string.std_dept), "cse");
-        STD_YEAR = Integer.parseInt(year);
-        SplashActivity.STD_SEMESTER = Integer.parseInt(semester);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        Intent userIntent = getIntent();
+        if (userIntent == null) {
+            mUserModel = Utils.getUserModel(getApplicationContext());
+        } else {
+            if (userIntent.getAction() != null &&
+                    userIntent.getAction().equalsIgnoreCase("user")) {
+                mUserModel = userIntent.getParcelableExtra(getString(R.string.user));
+            } else {
+                mUserModel = Utils.getUserModel(getApplicationContext());
+            }
+        }
+        if (mUserModel == null) {
+            startActivity(new Intent(getBaseContext(), SplashActivity.class));
+            finish();
+        }
+
+//        setting the user property for firebase analysis
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getBaseContext());
+        firebaseAnalytics.setUserProperty("department", mUserModel.getDept());
 
         /*
         set up everything of base activity
@@ -141,18 +162,18 @@ public class MainActivity extends AppCompatActivity
             CURRENT_INDEX = MAIN_INDEX;
         }
 
-        mCoordinatorContainer = (CoordinatorLayout) findViewById(R.id.main_activity_container);
+//        mCoordinatorContainer = findViewById(R.id.main_activity_container);
 
         ///changing status bar
-        ChangeDefaultColor.changeStatusColor(this, R.color.colorPrimaryDark);
+//        ChangeDefaultColor.changeStatusColor(this, R.color.colorPrimaryDark);
 
     }
 
     private void setBase() {
 
-        mBaseDrawer = (DrawerLayout) findViewById(R.id.base_drawer);
+        mBaseDrawer = findViewById(R.id.base_drawer);
 
-        mBaseNavigationView = (NavigationView) findViewById(R.id.base_nav);
+        mBaseNavigationView = findViewById(R.id.base_nav);
         ///nav header
         navHeader = mBaseNavigationView.getHeaderView(0);
     }
@@ -160,17 +181,34 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        mUserModel = Utils.getUserModel(getApplicationContext());
+        if (mUserModel == null) {
+            final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+            dialog.setMessage("Please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
 
-        //getting the saved values
-        getStudentYearAndSemester(this);
+            AuthUI.getInstance()
+                    .signOut(MainActivity.this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // user is now signed out
+                            Utils.clearUser(getApplicationContext());
+                            if (dialog.isShowing())
+                                dialog.dismiss();
+                            finish();
+                        }
+                    });
+        } else {
 
-        if (CURRENT_INDEX == -1) {
-            CURRENT_INDEX = MAIN_INDEX;
+            if (CURRENT_INDEX == -1) {
+                CURRENT_INDEX = MAIN_INDEX;
+            }
+
+            loadFragment();
+
+            setNavigationHeader();
         }
-
-        loadFragment();
-
-        setNavigationHeader();
 
     }
 
@@ -238,16 +276,16 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void changeBg(int bgId) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mCoordinatorContainer.setBackground(getResources()
-                    .getDrawable(bgId, getTheme()));
-        } else {
-            mCoordinatorContainer.setBackground(getResources().getDrawable(bgId));
-        }
-
-    }
+//    public void changeBg(int bgId) {
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            mCoordinatorContainer.setBackground(getResources()
+//                    .getDrawable(bgId, getTheme()));
+//        } else {
+//            mCoordinatorContainer.setBackground(getResources().getDrawable(bgId));
+//        }
+//
+//    }
 
     //removing the check/select from the menu
     protected void removeCheck(int index) {
@@ -261,14 +299,14 @@ public class MainActivity extends AppCompatActivity
         //navigation bar header
 
         //getting the layout's reference
-        mUserNameText = (TextView) navHeader.findViewById(R.id.nav_name_text_view);
-        mUserImage = (ImageView) navHeader.findViewById(R.id.nav_image);
+        mUserNameText = navHeader.findViewById(R.id.nav_name_text_view);
+        mUserImage = navHeader.findViewById(R.id.nav_image);
 
-        TextView mUserDetailsText = (TextView) navHeader.findViewById(R.id.nav_std_details_text_view);
+        TextView mUserDetailsText = navHeader.findViewById(R.id.nav_std_details_text_view);
 
         String detailsText = "";
 
-        switch (STD_YEAR) {
+        switch (Integer.parseInt(mUserModel.getYear())) {
             case 1:
                 detailsText = "1st Year";
                 break;
@@ -289,7 +327,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        switch (STD_SEMESTER) {
+        switch (Integer.parseInt(mUserModel.getSemester())) {
             case 1:
                 detailsText += " 1st Semester";
                 break;
@@ -298,22 +336,27 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        mUserDetailsText.setText(STD_DEPT.toUpperCase() + ": " + detailsText);
+        mUserDetailsText.setText(String.format("%s: %s", mUserModel.getDept().toUpperCase(), detailsText));
 
-        SharedPreferences preferences = getSharedPreferences(SignUp.USER_DETAILS, MODE_PRIVATE);
-
-        String name = preferences.getString(getString(R.string.std_name), null);
+        String name = mUserModel.getName();
 
         if (name != null)
             mUserNameText.setText(name);
 
         //loading image with picasso
         File file = getSavedImg(getBaseContext());
-        if (file != null && file.length() != 0) {
+        if (!TextUtils.isEmpty(mUserModel.getImgLink())) {
+            Picasso.with(getBaseContext())
+                    .load(mUserModel.getImgLink())
+                    .fit()
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(mUserImage);
+        } else if (file.length() != 0) {
             Log.e("manage image", "getFilePath: " + file);
             Picasso.with(getBaseContext())
                     .load(file)
                     .fit()
+                    .placeholder(R.mipmap.ic_launcher)
                     .into(mUserImage);
         } else {
             Picasso.with(getBaseContext())
@@ -328,6 +371,7 @@ public class MainActivity extends AppCompatActivity
     protected void changeSelectedItem(int index) {
 
         mBaseNavigationView.getMenu().getItem(index).setChecked(true);
+        invalidateOptionsMenu();
     }
 
     //setting the hamburger icon on the actionbar/toolbar
@@ -390,12 +434,40 @@ public class MainActivity extends AppCompatActivity
 
                         break;
 
-//                    case R.id.action_check_update:
-//                        tag_index = 7;
-//                        intent = new Intent(getApplicationContext(), UpdateActivity.class);
-//
-//                        break;
+                    case R.id.action_check_update:
+                        tag_index = 7;
+                        intent = new Intent(getApplicationContext(), UpdateActivity.class);
 
+                        break;
+
+                    case R.id.action_logout:
+                        tag_index = 10;
+                        final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+                        dialog.setMessage("Please wait...");
+                        dialog.setCancelable(false);
+                        dialog.show();
+
+                        AuthUI.getInstance()
+                                .signOut(MainActivity.this)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        // user is now signed out
+                                        Utils.clearUser(getApplicationContext());
+                                        if (dialog.isShowing())
+                                            dialog.dismiss();
+                                        finish();
+                                    }
+                                });
+                        break;
+                    case R.id.action_rate_us:
+                        tag_index = 11;
+                        final String appPackageName = getPackageName();// from Context or Activity object
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+                        break;
                     default:
                         tag_index = 0;
                         break;
@@ -403,24 +475,26 @@ public class MainActivity extends AppCompatActivity
 
 //                Toast.makeText(BaseActivity.this, "index:" + tag_index, Toast.LENGTH_SHORT).show();
 
-                /***********************************************************************************
+                /* **********************************************************************************
                  check if the current selected index is an item fragment or activity
                  if activity then launch the activity
                  else load the selected fragment and change the current index to change the select state
                  of the nav drawer
 
                  Note: index range 0 to 3 is fragment and others are activity
-                 ************************************************************************************/
+                 *********************************************************************************** */
 
                 if (tag_index >= 5) {
 
+                    if (tag_index < 10) {
 
-                    startActivity(intent);
+                        startActivity(intent);
+                    }
 
                 } else {
                     CURRENT_INDEX = tag_index;
 
-                    /***********************************************************************************
+                    /* **********************************************************************************
                      checking if the navigation item was selected from main activity
                      or any other activity, if from main activity then load the selected framgent
                      otherwise set the current index to the selected item and finish that calling activity
@@ -430,7 +504,7 @@ public class MainActivity extends AppCompatActivity
                      if this check not placed here then the app will try to load the fragment in
                      the current working activity, where the fragment could not be loaded,
                      as a result,the app will crush
-                     ************************************************************************************/
+                     *********************************************************************************** */
                     if (!activity.getClass().getSimpleName().equals(MAIN_ACTIVITY)) {
                         activity.finish();
                         return true;
@@ -535,6 +609,11 @@ public class MainActivity extends AppCompatActivity
         //adding font to text view
         titleCustomText.setTypeface(typeface);
 //        titleCustomText.setTextColor(Color.BLACK);
+
+//        if the title don't fit in the toolbar then animate it horizontally to display full title
+        titleCustomText.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        titleCustomText.setMarqueeRepeatLimit(-1);
+
 
         titleCustomText.setText(MainActivity.titles[CURRENT_INDEX]);
         //add the custom text view in toolbar

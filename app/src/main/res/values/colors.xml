@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Asif Imtiaz Shaafi
+  ~     Email: a15shaafi.209@gmail.com
+  ~     Date: 2, 2018
+  ~
+  ~ Copyright (c) 2018, AppHouseBD. All rights reserved.
+  ~
+  ~ Last Modified on 2/27/18 1:43 PM
+  ~ Modified By: shaafi
+  -->
+
 <resources>
     <!--<color name="colorPrimary">#3F51B5</color>-->
     <color name="colorPrimary">#0366ac</color>
@@ -7,15 +17,9 @@
 
     <color name="black_overlay">#66000000</color>
 
-    <color name="routineBackGround">#3fb399</color>
-    <color name="clockBackground">#009688</color>
-
     <!--add reminder toolbar-->
-    <color name="reminder_primary">#009688</color>
-    <color name="reminder_status">#00695c</color>
 
     <!--routine display toolbar colors-->
-    <color name="routine_primary">#388e3c</color>
     <color name="routine_status">#1b5e20</color>
 
     <color name="tab_selected">#243828</color>
